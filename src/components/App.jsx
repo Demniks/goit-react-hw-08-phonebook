@@ -1,95 +1,60 @@
-import { lazy } from 'react';
+import { useEffect, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { FadeLoader } from 'react-spinners';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { CssBaseline } from '@mui/material';
-
-import { useAuth } from 'hooks/useAuth';
-import { refreshUser } from 'redux/auth/authOperations';
-import { selectThemeDarkMode } from 'redux/theme/themeSelectors';
-
-import { Layout } from './Layout/Layout';
+import { selectIsRefreshing } from '../redux/auth/selectors';
+import { refreshUser } from 'redux/auth/operations';
 import { PrivateRoute } from './PrivateRoute';
 import { RestrictedRoute } from './RestrictedRoute';
 
-const HomePage = lazy(() => import('../pages/Home/Home'));
-const RegisterPage = lazy(() => import('../pages/Register/Register'));
-const LoginPage = lazy(() => import('../pages/Login/Login'));
-const ContactsPage = lazy(() => import('../pages/Contacts/Contacts'));
+import { Layout } from './Layout';
+import NotFound from '../components/NotFound';
+import { Loader } from '../components/Loader';
 
-export const App = () => {
-  const [mode, setMode] = useState('light');
-  const darkMode = useSelector(selectThemeDarkMode);
+const HomePage = lazy(() => import('../pages/Home'));
+const RegisterPage = lazy(() => import('../pages/Registration'));
+const LoginPage = lazy(() => import('../pages/LogIn'));
+const ContactsPage = lazy(() => import('../pages/Contacts'));
 
-  useEffect(() => {
-    if (darkMode) {
-      setMode('dark');
-    } else {
-      setMode('light');
-    }
-  }, [darkMode]);
-
-  const theme = useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode,
-        },
-      }),
-    [mode]
-  );
-
+export default function App() {
   const dispatch = useDispatch();
-  const { isRefreshing } = useAuth();
+  const isRefreshing = useSelector(selectIsRefreshing);
 
   useEffect(() => {
     dispatch(refreshUser());
   }, [dispatch]);
 
-  return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      {isRefreshing ? (
-        <FadeLoader
-          color="#399b0b"
-          cssOverride={{
-            display: 'block',
-            margin: '0 auto',
-          }}
+  return isRefreshing ? (
+    <Loader />
+  ) : (
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<HomePage />} />
+
+        <Route
+          path="/register"
+          element={
+            <RestrictedRoute
+              redirectTo="/contacts"
+              component={<RegisterPage />}
+            />
+          }
         />
-      ) : (
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<HomePage />} />
-            <Route
-              path="/register"
-              element={
-                <RestrictedRoute
-                  component={RegisterPage}
-                  redirectTo={'/contacts'}
-                />
-              }
-            />
-            <Route
-              path="/login"
-              element={
-                <RestrictedRoute
-                  component={LoginPage}
-                  redirectTo={'/contacts'}
-                />
-              }
-            />
-            <Route
-              path="/contacts"
-              element={
-                <PrivateRoute component={ContactsPage} redirectTo={'/login'} />
-              }
-            />
-          </Route>
-        </Routes>
-      )}
-    </ThemeProvider>
+
+        <Route
+          path="/login"
+          element={
+            <RestrictedRoute redirectTo="/contacts" component={<LoginPage />} />
+          }
+        />
+
+        <Route
+          path="/contacts"
+          element={
+            <PrivateRoute redirectTo="/login" component={<ContactsPage />} />
+          }
+        />
+      </Route>
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   );
-};
+}

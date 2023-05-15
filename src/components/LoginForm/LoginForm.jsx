@@ -1,110 +1,60 @@
-import { useFormik } from 'formik';
-import toast from 'react-hot-toast';
-import {
-  Avatar,
-  TextField,
-  Grid,
-  Box,
-  Typography,
-  Container,
-} from '@mui/material/';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { LoadingButton } from '@mui/lab';
 import { useDispatch } from 'react-redux';
-import { logIn } from 'redux/auth/authOperations';
-import { useAuth } from 'hooks/useAuth';
-import { validationLogIn } from 'constants/validationData';
+
+import { logIn } from 'redux/auth/operations';
+import { Box, Button, Container, TextField } from '@mui/material';
+import { Form } from './LoginForm.styled';
 
 export const LoginForm = () => {
   const dispatch = useDispatch();
-  const { authIsLoading } = useAuth();
 
-  const handleSubmit = (values, { resetForm }) => {
+  const handleSubmit = e => {
+    e.preventDefault();
+    const form = e.currentTarget;
     dispatch(
       logIn({
-        name: values.name,
-        email: values.email,
-        password: values.password,
+        email: form.elements.email.value,
+        password: form.elements.password.value,
       })
-    )
-      .unwrap()
-      .then(() => toast.success('You are successfully logged in'))
-      .catch(() =>
-        toast.error(
-          'Something went wrong...Try reloading the page and enter valid email, password'
-        )
-      );
+    );
 
-    resetForm();
+    form.reset();
   };
-  const formik = useFormik({
-    initialValues: {
-      email: '',
-      password: '',
-    },
-    validationSchema: validationLogIn,
-    onSubmit: handleSubmit,
-  });
 
   return (
-    <Container component="main" maxWidth="xs">
-      <Box
-        sx={{
-          marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5" mb={2}>
-          Log in
-        </Typography>
-        <form onSubmit={formik.handleSubmit}>
-          <Grid container spacing={4}>
-            <Grid item xs={12}>
-              <TextField
-                type="email"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                value={formik.values.email}
-                onChange={formik.handleChange}
-                error={formik.touched.email && Boolean(formik.errors.email)}
-                helperText={formik.touched.email && formik.errors.email}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                value={formik.values.password}
-                onChange={formik.handleChange}
-                error={
-                  formik.touched.password && Boolean(formik.errors.password)
-                }
-                helperText={formik.touched.password && formik.errors.password}
-              />
-            </Grid>
-          </Grid>
-          <LoadingButton
-            type="submit"
-            fullWidth
+    <Container
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        mt: { xs: '5px', sm: '20px' },
+      }}
+    >
+      <Box sx={{ flexGrow: 1, maxWidth: 752 }}>
+        <Form onSubmit={handleSubmit} autoComplete="off">
+          <TextField
+            label="email"
+            variant="outlined"
+            type="email"
+            name="email"
+            required
+          />
+
+          <TextField 
+            label="password"
+            variant="outlined"
+            type="password"
+            name="password"
+            required
+          />
+
+          <Button
+            sx={{ mt: '10px' }}
+            color="primary"
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            loading={authIsLoading}
+            type="submit"
           >
-            Log in
-          </LoadingButton>
-        </form>
+            Login{' '}
+          </Button>
+        </Form>
       </Box>
     </Container>
   );

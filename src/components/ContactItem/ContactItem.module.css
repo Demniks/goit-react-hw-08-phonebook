@@ -1,0 +1,19 @@
+.listItem {
+  display: flex;
+  justify-content: space-between;
+  margin: 5px ;
+  font-size: 20px;
+}
+
+.btnContactRemove {
+  padding: 0px 12px;
+  font-size: 16px;
+  /* background-color: blanchedalmond; */
+  border: solid 2px #212121;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btnContactRemove:hover {
+  background-color: #6987ca;
+}

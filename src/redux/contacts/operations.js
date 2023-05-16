@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 
 // axios.defaults.baseURL = 'https://connections-api.herokuapp.com'; - old settings
 // My own backend (node.js)
-axios.defaults.baseURL = 'https://phonebook-tn5s.onrender.com/';
+// axios.defaults.baseURL = 'https://phonebook-tn5s.onrender.com/';
 
 export const fetchContacts = createAsyncThunk(
   'contacts/fetchAll',

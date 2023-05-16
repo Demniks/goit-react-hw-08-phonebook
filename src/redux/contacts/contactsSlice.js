@@ -25,15 +25,15 @@ export const contactsSlice = createSlice({
         state.contacts.push(action.payload);
       })
       .addCase(deleteContacts.fulfilled, (state, action) => {
-        // state.contacts = state.contacts.filter(
-        //   contact => contact._id !== action.payload._id
-        // );
-        return {
-          ...state,
-          contacts: state.contacts.filter(
-            contact => contact._id !== action.payload._id
-          ),
-        };
+        state.contacts = state.contacts.filter(
+          contact => contact.id !== action.payload.id
+        );
+        // return {
+        //   ...state,
+        //   contacts: state.contacts.filter(
+        //     contact => contact._id !== action.payload._id
+        //   ),
+        // };
       })
       .addMatcher(
         isAnyOf(...extraAxtions.map(action => action.pending)),

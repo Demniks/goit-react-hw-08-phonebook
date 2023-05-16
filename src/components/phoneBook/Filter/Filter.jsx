@@ -18,7 +18,7 @@ export const Filter = () => {
     <FilterForm sx={{ flexGrow: 1, maxWidth: 752 }}>
       <Typography
         variant="body"
-        component="lable"
+        // component="lable"
         color="primary.contrastText"
       ></Typography>
       <TextField

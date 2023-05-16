@@ -1,4 +1,4 @@
-// import * as yup from 'yup';
+
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addContacts } from 'redux/contacts/operations';
@@ -55,7 +55,7 @@ export default function ContactForm() {
       <Form onSubmit={handelSubmit}>
         <Typography
           variant="body"
-          component="lable"
+          // component="lable"
           color="primary.contrastText"
         >
           Name
@@ -76,7 +76,7 @@ export default function ContactForm() {
 
         <Typography
           variant="body"
-          component="lable"
+          // component="lable"
           color="primary.contrastText"
         >
           Number
@@ -94,11 +94,9 @@ export default function ContactForm() {
           //   required
         />
 
-        <label>
-          <Button variant="contained" startIcon={<AddIcon />} type="submit">
-            Add contact
-          </Button>
-        </label>
+        <Button variant="contained" startIcon={<AddIcon />} type="submit">
+          Add contact
+        </Button>
       </Form>
     </Box>
   );

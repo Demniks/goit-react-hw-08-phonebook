@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-// axios.defaults.baseURL = 'https://connections-api.herokuapp.com'; - old settings
+axios.defaults.baseURL = 'https://connections-api.herokuapp.com'; 
 // My own backend (node.js)
 // axios.defaults.baseURL = 'https://phonebook-tn5s.onrender.com/';
 

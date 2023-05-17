@@ -31,16 +31,18 @@ export const LoginForm = () => {
       <Box sx={{ flexGrow: 1, maxWidth: 752 }}>
         <Form onSubmit={handleSubmit} autoComplete="off">
           <TextField
+            sx={{ bgcolor: '#e0e0e0' }}
             label="email"
-            variant="outlined"
+            variant="filled"
             type="email"
             name="email"
             required
           />
 
-          <TextField 
+          <TextField
+            sx={{ bgcolor: '#e0e0e0' }}
             label="password"
-            variant="outlined"
+            variant="filled"
             type="password"
             name="password"
             required

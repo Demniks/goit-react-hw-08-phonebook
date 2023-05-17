@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addContacts } from 'redux/contacts/operations';
@@ -27,7 +26,7 @@ export default function ContactForm() {
         return;
     }
   }
-
+  
   function reset() {
     setName('');
     setNumber('');
@@ -36,16 +35,13 @@ export default function ContactForm() {
   function handelSubmit(event) {
     event.preventDefault();
 
-    const contactName = [];
-
-    for (const contact of allContacts) {
-      contactName.push(contact.name);
-    }
-
-    if (contactName.includes(name)) {
+    const isExist = allContacts.find(contact => contact.name === name);
+    
+    if (isExist) {
       alert(`${name} is already in contacts list`);
       return;
     }
+
     dispatch(addContacts({ name, number }));
     reset();
   }
@@ -53,17 +49,15 @@ export default function ContactForm() {
   return (
     <Box sx={{ flexGrow: 1, maxWidth: 752, width: 'inherit' }}>
       <Form onSubmit={handelSubmit}>
-        <Typography
-          variant="body"
-          // component="lable"
-          color="primary.contrastText"
-        >
+        <Typography variant="body" color="primary.contrastText">
           Name
         </Typography>
 
         <TextField
+          sx={{ bgcolor: '#e0e0e0' }}
           label="name"
-          variant="outlined"
+          // variant="outlined"
+          variant="filled"
           autoComplete="off"
           type="text"
           name="name"
@@ -71,19 +65,15 @@ export default function ContactForm() {
           onChange={handelInputChange}
           pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-          //   required
         />
 
-        <Typography
-          variant="body"
-          // component="lable"
-          color="primary.contrastText"
-        >
+        <Typography variant="body" color="primary.contrastText">
           Number
         </Typography>
         <TextField
+          sx={{ bgcolor: '#e0e0e0' }}
           label="number"
-          variant="outlined"
+          variant="filled"
           autoComplete="off"
           type="tel"
           name="number"
@@ -91,10 +81,14 @@ export default function ContactForm() {
           onChange={handelInputChange}
           //   pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-          //   required
         />
 
-        <Button variant="contained" startIcon={<AddIcon />} type="submit">
+        <Button
+          sx={{ marginTop: '10px' }}
+          variant="contained"
+          startIcon={<AddIcon />}
+          type="submit"
+        >
           Add contact
         </Button>
       </Form>

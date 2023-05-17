@@ -30,16 +30,18 @@ export const RegisterForm = () => {
       <Box sx={{ flexGrow: 1, maxWidth: 752 }}>
         <Form onSubmit={handleSubmit} autoComplete="off">
           <TextField
+            sx={{ bgcolor: '#e0e0e0' }}
             label="Username"
-            variant="outlined"
+            variant="filled"
             type="text"
             name="name"
             required
           />
 
           <TextField
+            sx={{ bgcolor: '#e0e0e0' }}
             label="Email"
-            variant="outlined"
+            variant="filled"
             autoComplete="off"
             type="email"
             name="email"
@@ -47,8 +49,9 @@ export const RegisterForm = () => {
           />
 
           <TextField
+            sx={{ bgcolor: '#e0e0e0' }}
             label="Password"
-            variant="outlined"
+            variant="filled"
             autoComplete="off"
             type="password"
             name="password"
